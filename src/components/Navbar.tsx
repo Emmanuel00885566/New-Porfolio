@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 
 const navLinks = [
   { label: 'About', href: '#about', number: '01' },
@@ -18,111 +18,79 @@ const socials = [
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const [progress, setProgress] = useState(0)
-  const [active, setActive] = useState('about')
 
-  const navRef = useRef<HTMLDivElement | null>(null)
-  const linkRefs = useRef<Record<string, HTMLButtonElement | null>>({})
+  const { scrollYProgress } = useScroll()
+  const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1])
 
-  const sections = ['about', 'skills', 'projects', 'experience', 'contact']
-
-  /* ================= SCROLL ================= */
   useEffect(() => {
-    const onScroll = () => {
-      const scrollTop = window.scrollY
-      const docHeight =
-        document.documentElement.scrollHeight - window.innerHeight
-
-      setScrolled(scrollTop > 20)
-      setProgress(docHeight > 0 ? scrollTop / docHeight : 0)
-
-      /* Scroll spy */
-      let current = 'about'
-      for (const id of sections) {
-        const el = document.getElementById(id)
-        if (!el) continue
-        const offset = el.offsetTop - 120
-        if (scrollTop >= offset) current = id
-      }
-      setActive(current)
-    }
-
+    const onScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  /* ================= BODY LOCK ================= */
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : ''
+
     return () => {
       document.body.style.overflow = ''
     }
   }, [menuOpen])
 
-  /* ================= NAV CLICK ================= */
   const handleNavClick = (href: string) => {
     setMenuOpen(false)
 
     setTimeout(() => {
       const id = href.replace('#', '')
       const el = document.getElementById(id)
-      if (el) el.scrollIntoView({ behavior: 'smooth' })
-    }, 500)
-  }
 
-  /* ================= MAGNETIC ================= */
-  const handleMagnet = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const el = e.currentTarget
-    const rect = el.getBoundingClientRect()
-
-    const x = e.clientX - rect.left - rect.width / 2
-    const y = e.clientY - rect.top - rect.height / 2
-
-    el.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`
-  }
-
-  const resetMagnet = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.currentTarget.style.transform = 'translate(0px, 0px)'
+      if (el) {
+        el.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        })
+      }
+    }, 550)
   }
 
   return (
     <>
-      {/* Scroll progress */}
-      <div
+      {/* Scroll Progress Bar */}
+      <motion.div
         style={{
           position: 'fixed',
           top: 0,
           left: 0,
+          right: 0,
           height: 2,
-          width: `${progress * 100}%`,
           background: 'var(--accent)',
-          zIndex: 999,
+          transformOrigin: '0%',
+          scaleX,
+          zIndex: 300,
         }}
       />
 
       {/* NAVBAR */}
-      <nav
+      <motion.nav
+        animate={{
+          backdropFilter: scrolled ? 'blur(18px)' : 'blur(0px)',
+          backgroundColor: scrolled
+            ? 'rgba(8,12,18,0.75)'
+            : 'transparent',
+        }}
+        transition={{ duration: 0.3 }}
         style={{
           position: 'fixed',
           top: 0,
           left: 0,
           right: 0,
           zIndex: 200,
-          padding: '1.2rem 2.5rem',
+          padding: '1.2rem 2.2rem',
           display: 'flex',
-          justifyContent: 'space-between',
           alignItems: 'center',
-
-          background: scrolled
-            ? 'rgba(8,12,18,0.55)'
-            : 'transparent',
-
-          backdropFilter: scrolled ? 'blur(22px)' : 'none',
+          justifyContent: 'space-between',
           borderBottom: scrolled
-            ? '1px solid rgba(255,255,255,0.08)'
+            ? '1px solid var(--border)'
             : '1px solid transparent',
-
-          transition: 'all 0.35s ease',
         }}
       >
         {/* Logo */}
@@ -134,136 +102,151 @@ export default function Navbar() {
             fontWeight: 800,
             textDecoration: 'none',
             color: 'var(--text)',
+            letterSpacing: '-0.03em',
           }}
         >
           E<span style={{ color: 'var(--accent)' }}>-</span>Made
         </a>
 
-        {/* MENU BUTTON */}
+        {/* Menu Button */}
         <button
-          onMouseMove={handleMagnet}
-          onMouseLeave={resetMagnet}
           onClick={() => setMenuOpen(!menuOpen)}
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '0.6rem',
-            padding: '0.55rem 1rem',
-            borderRadius: 12,
+            gap: '.6rem',
+            padding: '.55rem 1rem',
+            borderRadius: 10,
             border: '1px solid var(--border)',
-            background: 'rgba(255,255,255,0.02)',
+            background: 'transparent',
             cursor: 'pointer',
-            transition: 'transform 0.2s ease',
           }}
         >
           <div style={{ width: 18 }}>
             <motion.span
-              animate={menuOpen ? { rotate: 45, y: 6 } : { rotate: 0 }}
-              style={{ display: 'block', height: 2, background: 'var(--text)' }}
+              animate={
+                menuOpen
+                  ? { rotate: 45, y: 6 }
+                  : { rotate: 0, y: 0 }
+              }
+              style={{
+                display: 'block',
+                height: 2,
+                background: 'var(--text)',
+                marginBottom: 4,
+              }}
             />
             <motion.span
               animate={menuOpen ? { opacity: 0 } : { opacity: 1 }}
-              style={{ display: 'block', height: 2, margin: '4px 0', background: 'var(--text)' }}
+              style={{
+                display: 'block',
+                height: 2,
+                background: 'var(--text)',
+                marginBottom: 4,
+              }}
             />
             <motion.span
-              animate={menuOpen ? { rotate: -45, y: -6 } : { rotate: 0 }}
-              style={{ display: 'block', height: 2, background: 'var(--text)' }}
+              animate={
+                menuOpen
+                  ? { rotate: -45, y: -6 }
+                  : { rotate: 0, y: 0 }
+              }
+              style={{
+                display: 'block',
+                height: 2,
+                background: 'var(--text)',
+              }}
             />
           </div>
 
-          <span style={{ fontSize: 12, color: 'var(--text2)' }}>
+          <span style={{ fontSize: 12, fontFamily: 'monospace' }}>
             {menuOpen ? 'close' : 'menu'}
           </span>
         </button>
-      </nav>
+      </motion.nav>
 
-      {/* OVERLAY MENU */}
+      {/* FULL SCREEN MENU */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            initial={{ opacity: 0, scale: 1.03 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.45 }}
+            initial={{ opacity: 0, clipPath: 'inset(0 0 100% 0)' }}
+            animate={{ opacity: 1, clipPath: 'inset(0 0 0% 0)' }}
+            exit={{ opacity: 0, clipPath: 'inset(0 0 100% 0)' }}
+            transition={{ duration: 0.6 }}
             style={{
               position: 'fixed',
               inset: 0,
+              background: '#080c12',
               zIndex: 150,
-              background: 'rgba(8,12,18,0.9)',
-              backdropFilter: 'blur(28px)',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'center',
               padding: '2rem',
             }}
           >
-            <div style={{ maxWidth: 900, margin: '0 auto' }}>
+            <div
+              style={{
+                maxWidth: 900,
+                width: '100%',
+                margin: '0 auto',
+              }}
+            >
               {navLinks.map((link, i) => (
                 <motion.button
                   key={link.label}
-                  initial={{ opacity: 0, x: -25 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.06 }}
                   onClick={() => handleNavClick(link.href)}
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ delay: i * 0.08 }}
                   style={{
                     width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    padding: '1rem 0',
+                    textAlign: 'left',
                     background: 'none',
                     border: 'none',
+                    color: 'var(--text)',
+                    padding: '1rem 0',
+                    fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
+                    fontWeight: 700,
                     cursor: 'pointer',
-                    borderBottom: '1px solid rgba(255,255,255,0.08)',
+                    borderBottom: '1px solid var(--border)',
                   }}
                 >
-                  <span style={{ color: 'var(--text3)' }}>{link.number}</span>
-                  <span
-                    style={{
-                      fontSize: '2rem',
-                      fontWeight: 800,
-                      color:
-                        active === link.href.replace('#', '')
-                          ? 'var(--accent)'
-                          : 'var(--text)',
-                      transition: 'color 0.3s',
-                    }}
-                  >
-                    {link.label}
+                  <span style={{ marginRight: 12, color: 'var(--text3)' }}>
+                    {link.number}
                   </span>
-                  <span>→</span>
+                  {link.label}
                 </motion.button>
               ))}
             </div>
 
-            {/* bottom bar */}
+            {/* Socials */}
             <div
               style={{
                 position: 'absolute',
                 bottom: 30,
                 left: 30,
-                right: 30,
                 display: 'flex',
-                justifyContent: 'space-between',
-                fontSize: 12,
-                color: 'var(--text3)',
+                gap: 20,
+                flexWrap: 'wrap',
               }}
             >
-              <span>Full Stack Engineer — Lagos</span>
-
-              <div style={{ display: 'flex', gap: 18 }}>
-                {socials.map(s => (
-                  <a
-                    key={s.label}
-                    href={s.href}
-                    style={{
-                      color: 'inherit',
-                      textDecoration: 'none',
-                    }}
-                  >
-                    {s.label}
-                  </a>
-                ))}
-              </div>
+              {socials.map(s => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{
+                    fontSize: 12,
+                    color: 'var(--text3)',
+                    textDecoration: 'none',
+                    fontFamily: 'monospace',
+                  }}
+                >
+                  {s.label}
+                </a>
+              ))}
             </div>
           </motion.div>
         )}
