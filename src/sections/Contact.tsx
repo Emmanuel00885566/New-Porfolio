@@ -1,3 +1,6 @@
+import { useState } from 'react'
+import FadeIn from '../components/FadeIn'
+
 const contactLinks = [
   {
     label: 'emmanuelniyi1997@gmail.com',
@@ -51,70 +54,326 @@ const contactLinks = [
 ]
 
 export default function Contact() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: '',
+  })
+
+  const [sent, setSent] = useState(false)
+
+  const handleSubmit = () => {
+    if (!formData.name || !formData.email || !formData.message) return
+
+    setSent(true)
+
+    setTimeout(() => {
+      setSent(false)
+    }, 4000)
+
+    setFormData({
+      name: '',
+      email: '',
+      message: '',
+    })
+  }
+
   return (
-    <section id="contact" style={{ padding: '7rem 0', background: 'var(--bg)' }}>
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 2rem' }}>
-        <p
-          className="font-mono"
-          style={{
-            fontSize: '.75rem',
-            letterSpacing: '.15em',
-            color: 'var(--accent)',
-            marginBottom: '.75rem',
-          }}
-        >
-          // contact
-        </p>
+    <section
+      id="contact"
+      style={{
+        padding: '7rem 0',
+        background: 'var(--bg2)',
+      }}
+    >
+      <div
+        style={{
+          maxWidth: 680,
+          margin: '0 auto',
+          padding: '0 2rem',
+          textAlign: 'center',
+        }}
+      >
+        <FadeIn>
+          <p
+            className="font-mono"
+            style={{
+              fontSize: '.75rem',
+              letterSpacing: '.15em',
+              color: 'var(--accent)',
+              marginBottom: '.75rem',
+            }}
+          >
+            // contact
+          </p>
 
-        <h2
-          style={{
-            fontSize: 'clamp(2rem, 4vw, 2.6rem)',
-            fontWeight: 800,
-            letterSpacing: '-.04em',
-            lineHeight: 1.1,
-            marginBottom: '3rem',
-          }}
-        >
-          Let&apos;s build something together.
-        </h2>
+          <h2
+            style={{
+              fontSize: 'clamp(2rem, 4vw, 2.6rem)',
+              fontWeight: 800,
+              letterSpacing: '-.04em',
+              lineHeight: 1.1,
+              marginBottom: '1rem',
+            }}
+          >
+            Let's build something.
+          </h2>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          {contactLinks.map(link => (
-            <a
-              key={link.label}
-              href={link.href}
-              target="_blank"
-              rel="noreferrer"
+          <div
+            style={{
+              width: 40,
+              height: 2,
+              background: 'var(--accent)',
+              margin: '0 auto 1.5rem',
+            }}
+          />
+
+          <p
+            style={{
+              color: 'var(--text2)',
+              fontSize: '.98rem',
+              lineHeight: 1.8,
+              marginBottom: '2.5rem',
+            }}
+          >
+            Have a project in mind, a problem to solve, or just want to
+            connect? I'm currently open to freelance, contract, and full-time
+            opportunities.
+          </p>
+        </FadeIn>
+
+        <FadeIn delay={0.15}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '1rem',
+              marginBottom: '3rem',
+              flexWrap: 'wrap',
+            }}
+          >
+            {contactLinks.map(link => (
+              <a
+                key={link.label}
+                href={link.href}
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '.6rem',
+                  padding: '.85rem 1.5rem',
+                  background: 'var(--surface)',
+                  border: '1px solid var(--border)',
+                  borderRadius: 10,
+                  color: 'var(--text2)',
+                  textDecoration: 'none',
+                  fontFamily: 'Fira Code, monospace',
+                  fontSize: '.82rem',
+                  letterSpacing: '.05em',
+                  transition: 'all .2s',
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.borderColor = 'var(--accent)'
+                  e.currentTarget.style.color = 'var(--accent)'
+                  e.currentTarget.style.transform = 'translateY(-2px)'
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.borderColor = 'var(--border)'
+                  e.currentTarget.style.color = 'var(--text2)'
+                  e.currentTarget.style.transform = 'translateY(0)'
+                }}
+              >
+                {link.icon}
+                {link.label}
+              </a>
+            ))}
+          </div>
+        </FadeIn>
+
+        <FadeIn delay={0.3}>
+          <div
+            style={{
+              background: 'var(--surface)',
+              border: '1px solid var(--border)',
+              borderRadius: 16,
+              padding: '2.5rem',
+              textAlign: 'left',
+              position: 'relative',
+              overflow: 'hidden',
+            }}
+          >
+            <div
               style={{
-                display: 'flex',
-                alignItems: 'center',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: 1,
+                background:
+                  'linear-gradient(90deg, transparent, var(--accent), transparent)',
+              }}
+            />
+
+            <div
+              className="form-row"
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr',
                 gap: '1rem',
-                padding: '1rem',
-                border: '1px solid var(--border)',
-                borderRadius: 10,
-                textDecoration: 'none',
-                color: 'var(--text)',
-                transition: 'all .2s',
+                marginBottom: '1rem',
+              }}
+            >
+              {[
+                {
+                  key: 'name',
+                  label: 'name',
+                  type: 'text',
+                  placeholder: 'Your name',
+                },
+                {
+                  key: 'email',
+                  label: 'email',
+                  type: 'email',
+                  placeholder: 'your@email.com',
+                },
+              ].map(field => (
+                <div key={field.key}>
+                  <label
+                    className="font-mono"
+                    style={{
+                      display: 'block',
+                      fontSize: '.72rem',
+                      letterSpacing: '.08em',
+                      color: 'var(--text3)',
+                      marginBottom: '.5rem',
+                    }}
+                  >
+                    {field.label}
+                  </label>
+
+                  <input
+                    type={field.type}
+                    placeholder={field.placeholder}
+                    value={formData[field.key as keyof typeof formData]}
+                    onChange={e =>
+                      setFormData({
+                        ...formData,
+                        [field.key]: e.target.value,
+                      })
+                    }
+                    style={{
+                      width: '100%',
+                      padding: '.75rem 1rem',
+                      background: 'var(--bg)',
+                      border: '1px solid var(--border)',
+                      borderRadius: 8,
+                      color: 'var(--text)',
+                      fontFamily: 'Plus Jakarta Sans, sans-serif',
+                      fontSize: '.9rem',
+                      outline: 'none',
+                      transition: 'border-color .2s',
+                    }}
+                    onFocus={e => {
+                      e.currentTarget.style.borderColor = 'var(--accent)'
+                    }}
+                    onBlur={e => {
+                      e.currentTarget.style.borderColor = 'var(--border)'
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+
+            <div style={{ marginBottom: '1.5rem' }}>
+              <label
+                className="font-mono"
+                style={{
+                  display: 'block',
+                  fontSize: '.72rem',
+                  letterSpacing: '.08em',
+                  color: 'var(--text3)',
+                  marginBottom: '.5rem',
+                }}
+              >
+                message
+              </label>
+
+              <textarea
+                placeholder="Tell me about your project..."
+                value={formData.message}
+                onChange={e =>
+                  setFormData({
+                    ...formData,
+                    message: e.target.value,
+                  })
+                }
+                rows={5}
+                style={{
+                  width: '100%',
+                  padding: '.75rem 1rem',
+                  background: 'var(--bg)',
+                  border: '1px solid var(--border)',
+                  borderRadius: 8,
+                  color: 'var(--text)',
+                  fontFamily: 'Plus Jakarta Sans, sans-serif',
+                  fontSize: '.9rem',
+                  outline: 'none',
+                  transition: 'border-color .2s',
+                  resize: 'none',
+                }}
+                onFocus={e => {
+                  e.currentTarget.style.borderColor = 'var(--accent)'
+                }}
+                onBlur={e => {
+                  e.currentTarget.style.borderColor = 'var(--border)'
+                }}
+              />
+            </div>
+
+            <button
+              onClick={handleSubmit}
+              style={{
+                width: '100%',
+                padding: '.95rem',
+                background: sent ? 'var(--green)' : 'var(--accent)',
+                color: '#fff',
+                border: 'none',
+                borderRadius: 8,
+                fontFamily: 'Plus Jakarta Sans, sans-serif',
+                fontSize: '.95rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'all .3s',
               }}
               onMouseEnter={e => {
-                e.currentTarget.style.borderColor = 'var(--accent)'
+                if (!sent) {
+                  e.currentTarget.style.background = 'var(--accent2)'
+                }
+
                 e.currentTarget.style.transform = 'translateY(-2px)'
               }}
               onMouseLeave={e => {
-                e.currentTarget.style.borderColor = 'var(--border)'
+                if (!sent) {
+                  e.currentTarget.style.background = 'var(--accent)'
+                }
+
                 e.currentTarget.style.transform = 'translateY(0)'
               }}
             >
-              <span style={{ display: 'flex', alignItems: 'center' }}>
-                {link.icon}
-              </span>
-              <span className="font-mono" style={{ fontSize: '.85rem' }}>
-                {link.label}
-              </span>
-            </a>
-          ))}
-        </div>
+              {sent ? '✓ Message sent!' : 'Send message →'}
+            </button>
+          </div>
+        </FadeIn>
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .form-row {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
     </section>
   )
 }

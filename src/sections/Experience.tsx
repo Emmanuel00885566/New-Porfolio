@@ -1,3 +1,5 @@
+import FadeIn from '../components/FadeIn'
+
 const values = [
   {
     number: '01',
@@ -44,98 +46,104 @@ export default function Experience() {
       >
 
         {/* Header */}
-        <p
-          className="font-mono"
-          style={{
-            fontSize: '.75rem',
-            letterSpacing: '.15em',
-            color: 'var(--accent)',
-            marginBottom: '.75rem',
-            textTransform: 'uppercase',
-          }}
-        >
-          // why work with me
-        </p>
+        <FadeIn>
+          <p
+            className="font-mono"
+            style={{
+              fontSize: '.75rem',
+              letterSpacing: '.15em',
+              color: 'var(--accent)',
+              marginBottom: '.75rem',
+              textTransform: 'uppercase',
+            }}
+          >
+            // why work with me
+          </p>
 
-        <h2
-          style={{
-            fontSize: 'clamp(2rem, 4vw, 2.6rem)',
-            fontWeight: 800,
-            letterSpacing: '-.04em',
-            lineHeight: 1.1,
-            marginBottom: '1rem',
-          }}
-        >
-          What makes the difference.
-        </h2>
+          <h2
+            style={{
+              fontSize: 'clamp(2rem, 4vw, 2.6rem)',
+              fontWeight: 800,
+              letterSpacing: '-.04em',
+              lineHeight: 1.1,
+              marginBottom: '1rem',
+            }}
+          >
+            What makes the difference.
+          </h2>
 
-        <p
-          style={{
-            maxWidth: 700,
-            color: 'var(--text2)',
-            lineHeight: 1.7,
-            marginBottom: '2rem',
-            fontSize: '.98rem',
-          }}
-        >
-          Beyond writing code, I focus on building scalable systems,
-          maintainable architecture, and developer friendly solutions that
-          continue performing as products grow.
-        </p>
+          <p
+            style={{
+              maxWidth: 700,
+              color: 'var(--text2)',
+              lineHeight: 1.7,
+              marginBottom: '2rem',
+              fontSize: '.98rem',
+            }}
+          >
+            Beyond writing code, I focus on building scalable systems,
+            maintainable architecture, and developer friendly solutions that
+            continue performing as products grow.
+          </p>
 
-        <div
-          style={{
-            width: 50,
-            height: 3,
-            background: 'var(--accent)',
-            marginBottom: '3rem',
-            borderRadius: 999,
-          }}
-        />
+          <div
+            style={{
+              width: 50,
+              height: 3,
+              background: 'var(--accent)',
+              marginBottom: '3rem',
+              borderRadius: 999,
+            }}
+          />
+        </FadeIn>
 
         {/* Value Cards */}
         <div className="value-grid">
           {values.map((item, index) => (
-            <div
+            <FadeIn
               key={`${item.number}-${index}`}
-              className="value-card"
+              delay={index * 0.15}
             >
+              <div className="value-card">
 
-              {/* Accent line */}
-              <div className="top-line" />
+                <div className="top-line" />
 
-              <p className="value-number font-mono">
-                {item.number} /
-              </p>
+                <p className="value-number font-mono">
+                  {item.number} /
+                </p>
 
-              <h3 className="value-title">
-                {item.title}
-              </h3>
+                <h3 className="value-title">
+                  {item.title}
+                </h3>
 
-              <p className="value-description">
-                {item.description}
-              </p>
-            </div>
+                <p className="value-description">
+                  {item.description}
+                </p>
+              </div>
+            </FadeIn>
           ))}
         </div>
 
         {/* Stats */}
-        <div className="stats-grid">
-          {stats.map((stat, index) => (
-            <div
-              key={`${stat.label}-${index}`}
-              className="stat-card"
-            >
-              <div className="stat-value">
-                {stat.value}
-              </div>
+        <FadeIn delay={0.2}>
+          <div className="stats-grid">
+            {stats.map((stat, index) => (
+              <div
+                key={`${stat.label}-${index}`}
+                className="stat-card"
+              >
+                <div className="stat-value">
+                  {stat.value}
+                </div>
 
-              <div className="stat-label font-mono">
-                {stat.label}
+                <div className="stat-label font-mono">
+                  {stat.label}
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        </FadeIn>
+
       </div>
 
       <style>{`
