@@ -1,9 +1,7 @@
-import { useState } from 'react'
-
 const contactLinks = [
   {
-    label: 'hello@devworks.io',
-    href: 'mailto:hello@devworks.io',
+    label: 'emmanuelniyi1997@gmail.com',
+    href: 'mailto:emmanuelniyi1997@gmail.com',
     icon: (
       <svg
         width="16"
@@ -19,7 +17,7 @@ const contactLinks = [
   },
   {
     label: 'GitHub',
-    href: 'https://github.com',
+    href: 'https://github.com/Emmanuel00885566',
     icon: (
       <svg
         width="16"
@@ -53,51 +51,9 @@ const contactLinks = [
 ]
 
 export default function Contact() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
-  })
-
-  const [sent, setSent] = useState(false)
-
-  const handleSubmit = e => {
-    e.preventDefault()
-
-    if (!formData.name || !formData.email || !formData.message) return
-
-    // Future integration point
-    setSent(true)
-
-    setTimeout(() => {
-      setSent(false)
-    }, 4000)
-
-    setFormData({
-      name: '',
-      email: '',
-      message: '',
-    })
-  }
-
   return (
-    <section
-      id="contact"
-      style={{
-        padding: '7rem 0',
-        background: 'var(--bg2)',
-      }}
-    >
-      <div
-        style={{
-          maxWidth: 720,
-          margin: '0 auto',
-          padding: '0 2rem',
-          textAlign: 'center',
-        }}
-      >
-
-        {/* Header */}
+    <section id="contact" style={{ padding: '7rem 0', background: 'var(--bg)' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 2rem' }}>
         <p
           className="font-mono"
           style={{
@@ -105,7 +61,6 @@ export default function Contact() {
             letterSpacing: '.15em',
             color: 'var(--accent)',
             marginBottom: '.75rem',
-            textTransform: 'uppercase',
           }}
         >
           // contact
@@ -113,309 +68,53 @@ export default function Contact() {
 
         <h2
           style={{
-            fontSize: 'clamp(2rem, 4vw, 2.8rem)',
+            fontSize: 'clamp(2rem, 4vw, 2.6rem)',
             fontWeight: 800,
             letterSpacing: '-.04em',
             lineHeight: 1.1,
-            marginBottom: '1rem',
+            marginBottom: '3rem',
           }}
         >
-          Let&apos;s build something.
+          Let&apos;s build something together.
         </h2>
 
-        <div
-          style={{
-            width: 50,
-            height: 3,
-            background: 'var(--accent)',
-            margin: '0 auto 1.5rem',
-            borderRadius: 999,
-          }}
-        />
-
-        <p
-          style={{
-            color: 'var(--text2)',
-            fontSize: '.98rem',
-            lineHeight: 1.8,
-            marginBottom: '2.8rem',
-          }}
-        >
-          Have a project idea, a backend system to scale, or just want to
-          connect? I&apos;m currently open to freelance, contract, and full time
-          opportunities.
-        </p>
-
-        {/* Contact Links */}
-        <div className="contact-links">
-          {contactLinks.map((link, index) => (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          {contactLinks.map(link => (
             <a
-              key={`${link.label}-${index}`}
+              key={link.label}
               href={link.href}
               target="_blank"
               rel="noreferrer"
-              className="contact-link"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '1rem',
+                padding: '1rem',
+                border: '1px solid var(--border)',
+                borderRadius: 10,
+                textDecoration: 'none',
+                color: 'var(--text)',
+                transition: 'all .2s',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.borderColor = 'var(--accent)'
+                e.currentTarget.style.transform = 'translateY(-2px)'
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.borderColor = 'var(--border)'
+                e.currentTarget.style.transform = 'translateY(0)'
+              }}
             >
-              {link.icon}
-              {link.label}
+              <span style={{ display: 'flex', alignItems: 'center' }}>
+                {link.icon}
+              </span>
+              <span className="font-mono" style={{ fontSize: '.85rem' }}>
+                {link.label}
+              </span>
             </a>
           ))}
         </div>
-
-        {/* Form */}
-        <form
-          onSubmit={handleSubmit}
-          className="contact-form"
-        >
-
-          {/* Top Glow */}
-          <div className="form-glow-line" />
-
-          {/* Row */}
-          <div className="form-row">
-
-            {/* Name */}
-            <div>
-              <label className="input-label font-mono">
-                name
-              </label>
-
-              <input
-                type="text"
-                placeholder="Your name"
-                value={formData.name}
-                onChange={e =>
-                  setFormData({
-                    ...formData,
-                    name: e.target.value,
-                  })
-                }
-                className="form-input"
-              />
-            </div>
-
-            {/* Email */}
-            <div>
-              <label className="input-label font-mono">
-                email
-              </label>
-
-              <input
-                type="email"
-                placeholder="your@email.com"
-                value={formData.email}
-                onChange={e =>
-                  setFormData({
-                    ...formData,
-                    email: e.target.value,
-                  })
-                }
-                className="form-input"
-              />
-            </div>
-          </div>
-
-          {/* Message */}
-          <div className="message-group">
-            <label className="input-label font-mono">
-              message
-            </label>
-
-            <textarea
-              placeholder="Tell me about your project..."
-              rows={6}
-              value={formData.message}
-              onChange={e =>
-                setFormData({
-                  ...formData,
-                  message: e.target.value,
-                })
-              }
-              className="form-textarea"
-            />
-          </div>
-
-          {/* Button */}
-          <button
-            type="submit"
-            className={`submit-button ${sent ? 'sent' : ''}`}
-          >
-            {sent ? '✓ Message sent!' : 'Send message →'}
-          </button>
-        </form>
       </div>
-
-      <style>{`
-        .contact-links {
-          display: flex;
-          justify-content: center;
-          gap: 1rem;
-          margin-bottom: 3rem;
-          flex-wrap: wrap;
-        }
-
-        .contact-link {
-          display: flex;
-          align-items: center;
-          gap: .6rem;
-          padding: .9rem 1.4rem;
-          background: var(--surface);
-          border: 1px solid var(--border);
-          border-radius: 12px;
-          color: var(--text2);
-          text-decoration: none;
-          font-family: 'DM Mono', monospace;
-          font-size: .82rem;
-          letter-spacing: .05em;
-          transition: all .25s ease;
-        }
-
-        .contact-link:hover {
-          border-color: var(--accent);
-          color: var(--accent);
-          transform: translateY(-3px);
-          background: rgba(59,130,246,0.05);
-        }
-
-        .contact-form {
-          background: var(--surface);
-          border: 1px solid var(--border);
-          border-radius: 22px;
-          padding: 2.5rem;
-          text-align: left;
-          position: relative;
-          overflow: hidden;
-          transition: border-color .3s ease;
-        }
-
-        .contact-form:hover {
-          border-color: var(--border2);
-        }
-
-        .contact-form::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(
-            135deg,
-            rgba(59,130,246,0.04),
-            transparent
-          );
-          opacity: 0;
-          transition: opacity .3s ease;
-          pointer-events: none;
-        }
-
-        .contact-form:hover::before {
-          opacity: 1;
-        }
-
-        .form-glow-line {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 1px;
-          background: linear-gradient(
-            90deg,
-            transparent,
-            var(--accent),
-            transparent
-          );
-        }
-
-        .form-row {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 1rem;
-          margin-bottom: 1rem;
-        }
-
-        .message-group {
-          margin-bottom: 1.5rem;
-        }
-
-        .input-label {
-          display: block;
-          font-size: .72rem;
-          letter-spacing: .08em;
-          color: var(--text3);
-          margin-bottom: .5rem;
-          text-transform: uppercase;
-        }
-
-        .form-input,
-        .form-textarea {
-          width: 100%;
-          padding: .9rem 1rem;
-          background: var(--bg);
-          border: 1px solid var(--border);
-          border-radius: 10px;
-          color: var(--text);
-          font-family: 'Syne', sans-serif;
-          font-size: .92rem;
-          outline: none;
-          transition: all .25s ease;
-        }
-
-        .form-input:focus,
-        .form-textarea:focus {
-          border-color: var(--accent);
-          background: rgba(59,130,246,0.02);
-        }
-
-        .form-textarea {
-          resize: vertical;
-          min-height: 140px;
-        }
-
-        .submit-button {
-          width: 100%;
-          padding: 1rem;
-          background: var(--accent);
-          color: #fff;
-          border: none;
-          border-radius: 10px;
-          font-family: 'Syne', sans-serif;
-          font-size: .95rem;
-          font-weight: 600;
-          cursor: pointer;
-          transition: all .3s ease;
-          letter-spacing: -.01em;
-        }
-
-        .submit-button:hover {
-          background: var(--accent2);
-          transform: translateY(-2px);
-        }
-
-        .submit-button.sent {
-          background: var(--green);
-        }
-
-        .submit-button.sent:hover {
-          transform: none;
-        }
-
-        @media (max-width: 768px) {
-          #contact {
-            padding: 5rem 0;
-          }
-
-          .form-row {
-            grid-template-columns: 1fr;
-          }
-
-          .contact-form {
-            padding: 1.6rem;
-          }
-
-          .contact-link {
-            width: 100%;
-            justify-content: center;
-          }
-        }
-      `}</style>
     </section>
   )
 }

@@ -1,23 +1,38 @@
 const skillGroups = [
   {
     label: '// Frontend',
-    skills: ['React', 'TypeScript', 'JavaScript', 'Tailwind CSS', 'HTML', 'CSS'],
-    hot: ['React', 'TypeScript', 'Tailwind CSS'],
+    skills: [
+      'React.js',
+      'Next.js',
+      'JavaScript',
+      'HTML5',
+      'CSS3',
+      'Tailwind CSS',
+      'Responsive Design',
+    ],
+    hot: ['React.js', 'Next.js', 'Tailwind CSS', 'JavaScript'],
   },
   {
     label: '// Backend',
-    skills: ['Node.js', 'Express.js', 'REST API', 'JWT Auth', 'WebSockets', 'Microservices'],
-    hot: ['Node.js', 'Express.js'],
+    skills: [
+      'Node.js',
+      'Express.js',
+      'REST API',
+      'Authentication',
+      'Business Logic',
+      'Error Handling',
+    ],
+    hot: ['Node.js', 'Express.js', 'REST API'],
   },
   {
     label: '// Database',
-    skills: ['MongoDB', 'SQL', 'PostgreSQL', 'Redis', 'Mongoose'],
-    hot: ['MongoDB', 'SQL'],
+    skills: ['MongoDB', 'SQL', 'Data Modelling', 'Mongoose'],
+    hot: ['MongoDB'],
   },
   {
-    label: '// Tools & DevOps',
-    skills: ['Git', 'Docker', 'CI/CD', 'AWS', 'Postman', 'Linux'],
-    hot: ['Git', 'Docker'],
+    label: '// Tools & Platforms',
+    skills: ['Git', 'GitHub', 'Postman', 'VS Code', 'Vercel'],
+    hot: ['Git', 'GitHub', 'Vercel'],
   },
 ]
 
@@ -37,8 +52,6 @@ export default function Skills() {
           padding: '0 2rem',
         }}
       >
-
-        {/* Header */}
         <p
           className="font-mono"
           style={{
@@ -46,7 +59,6 @@ export default function Skills() {
             letterSpacing: '.15em',
             color: 'var(--accent)',
             marginBottom: '.75rem',
-            textTransform: 'uppercase',
           }}
         >
           // tech stack
@@ -64,49 +76,102 @@ export default function Skills() {
           Tools I build with.
         </h2>
 
-        <p
-          style={{
-            maxWidth: 650,
-            color: 'var(--text2)',
-            lineHeight: 1.7,
-            marginBottom: '2rem',
-            fontSize: '.98rem',
-          }}
-        >
-          I build scalable and modern web applications using powerful frontend,
-          backend, database, and DevOps technologies focused on performance,
-          clean architecture, and user experience.
-        </p>
-
         <div
           style={{
-            width: 50,
-            height: 3,
+            width: 40,
+            height: 2,
             background: 'var(--accent)',
             marginBottom: '3rem',
-            borderRadius: 999,
           }}
         />
 
-        {/* Skills Grid */}
-        <div className="skills-grid">
-          {skillGroups.map((group, groupIndex) => (
+        <div
+          className="skills-grid"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: '1.5rem',
+          }}
+        >
+          {skillGroups.map(group => (
             <div
-              key={`${group.label}-${groupIndex}`}
-              className="skill-card"
+              key={group.label}
+              style={{
+                background: 'var(--surface)',
+                border: '1px solid var(--border)',
+                borderRadius: 12,
+                padding: '1.75rem',
+                transition: 'border-color .3s',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.borderColor = 'var(--border2)'
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.borderColor = 'var(--border)'
+              }}
             >
-              <p className="skill-label">
+              <p
+                className="font-mono"
+                style={{
+                  fontSize: '.75rem',
+                  letterSpacing: '.12em',
+                  color: 'var(--accent2)',
+                  marginBottom: '1.25rem',
+                  textTransform: 'uppercase',
+                }}
+              >
                 {group.label}
               </p>
 
-              <div className="skills-wrap">
-                {group.skills.map((skill, skillIndex) => {
+              <div
+                style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '.5rem',
+                }}
+              >
+                {group.skills.map(skill => {
                   const isHot = group.hot.includes(skill)
 
                   return (
                     <span
-                      key={`${skill}-${skillIndex}`}
-                      className={`skill-badge ${isHot ? 'hot' : ''}`}
+                      key={skill}
+                      style={{
+                        padding: '.35rem .8rem',
+                        borderRadius: 6,
+                        fontSize: '.8rem',
+                        fontFamily: 'DM Mono, monospace',
+                        border: `1px solid ${
+                          isHot
+                            ? 'rgba(59,130,246,0.35)'
+                            : 'var(--border)'
+                        }`,
+                        color: isHot ? '#93c5fd' : 'var(--text2)',
+                        background: isHot
+                          ? 'rgba(59,130,246,0.05)'
+                          : 'var(--bg)',
+                        transition: 'all .2s',
+                        cursor: 'default',
+                      }}
+                      onMouseEnter={e => {
+                        e.currentTarget.style.borderColor = 'var(--accent)'
+                        e.currentTarget.style.color = 'var(--accent)'
+                        e.currentTarget.style.background =
+                          'rgba(59,130,246,0.08)'
+                      }}
+                      onMouseLeave={e => {
+                        e.currentTarget.style.borderColor = isHot
+                          ? 'rgba(59,130,246,0.35)'
+                          : 'var(--border)'
+
+                        e.currentTarget.style.color = isHot
+                          ? '#93c5fd'
+                          : 'var(--text2)'
+
+                        e.currentTarget.style.background = isHot
+                          ? 'rgba(59,130,246,0.05)'
+                          : 'var(--bg)'
+                      }}
                     >
                       {skill}
                     </span>
@@ -119,95 +184,9 @@ export default function Skills() {
       </div>
 
       <style>{`
-        .skills-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-          gap: 1.5rem;
-        }
-
-        .skill-card {
-          background: var(--surface);
-          border: 1px solid var(--border);
-          border-radius: 16px;
-          padding: 1.75rem;
-          transition: all .3s ease;
-          position: relative;
-          overflow: hidden;
-        }
-
-        .skill-card:hover {
-          border-color: var(--border2);
-          transform: translateY(-4px);
-        }
-
-        .skill-card::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(
-            135deg,
-            rgba(59,130,246,0.05),
-            transparent
-          );
-          opacity: 0;
-          transition: opacity .3s ease;
-          pointer-events: none;
-        }
-
-        .skill-card:hover::before {
-          opacity: 1;
-        }
-
-        .skill-label {
-          font-size: .75rem;
-          letter-spacing: .12em;
-          color: var(--accent2);
-          margin-bottom: 1.25rem;
-          text-transform: uppercase;
-          font-family: monospace;
-        }
-
-        .skills-wrap {
-          display: flex;
-          flex-wrap: wrap;
-          gap: .6rem;
-        }
-
-        .skill-badge {
-          padding: .45rem .85rem;
-          border-radius: 8px;
-          font-size: .8rem;
-          font-family: 'DM Mono', monospace;
-          border: 1px solid var(--border);
-          color: var(--text2);
-          background: var(--bg);
-          transition: all .25s ease;
-          cursor: pointer;
-          user-select: none;
-        }
-
-        .skill-badge:hover {
-          border-color: var(--accent);
-          color: var(--accent);
-          background: rgba(59,130,246,0.08);
-          transform: translateY(-2px);
-        }
-
-        .skill-badge.hot {
-          border-color: rgba(59,130,246,0.35);
-          color: var(--accent3, #93c5fd);
-          background: rgba(59,130,246,0.05);
-        }
-
-        .skill-badge.hot:hover {
-          border-color: var(--accent);
-          color: var(--accent);
-          background: rgba(59,130,246,0.12);
-        }
-
         @media (max-width: 768px) {
-          #skills {
-            padding: 5rem 0;
+          .skills-grid {
+            grid-template-columns: 1fr !important;
           }
         }
       `}</style>

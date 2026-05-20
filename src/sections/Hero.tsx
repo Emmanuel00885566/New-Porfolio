@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 
 const headlines = [
-  'Scalable Backend Systems.',
+  'Scalable Web Applications.',
   'Secure REST APIs.',
-  'Efficient Web Apps.',
+  'Full Stack Solutions.',
   'Clean Architecture.',
 ]
 
@@ -12,24 +12,25 @@ export default function Hero() {
   const [displayed, setDisplayed] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
 
-  // Typewriter effect
   useEffect(() => {
     const current = headlines[currentIndex]
-    let timeout
+    let timeout: ReturnType<typeof setTimeout>
 
     if (!isDeleting && displayed.length < current.length) {
       timeout = setTimeout(() => {
         setDisplayed(current.slice(0, displayed.length + 1))
       }, 60)
     } else if (!isDeleting && displayed.length === current.length) {
-      timeout = setTimeout(() => setIsDeleting(true), 1800)
+      timeout = setTimeout(() => {
+        setIsDeleting(true)
+      }, 1800)
     } else if (isDeleting && displayed.length > 0) {
       timeout = setTimeout(() => {
         setDisplayed(displayed.slice(0, -1))
       }, 35)
     } else if (isDeleting && displayed.length === 0) {
       setIsDeleting(false)
-      setCurrentIndex((prev) => (prev + 1) % headlines.length)
+      setCurrentIndex((currentIndex + 1) % headlines.length)
     }
 
     return () => clearTimeout(timeout)
@@ -47,7 +48,6 @@ export default function Hero() {
         padding: '6rem 0 4rem',
       }}
     >
-      {/* Animated grid background */}
       <div
         style={{
           position: 'absolute',
@@ -63,7 +63,6 @@ export default function Hero() {
         }}
       />
 
-      {/* Glow */}
       <div
         style={{
           position: 'absolute',
@@ -78,7 +77,6 @@ export default function Hero() {
         }}
       />
 
-      {/* Content */}
       <div
         style={{
           maxWidth: 1100,
@@ -88,7 +86,6 @@ export default function Hero() {
           zIndex: 2,
         }}
       >
-        {/* Status badge */}
         <div
           style={{
             display: 'inline-flex',
@@ -111,6 +108,7 @@ export default function Hero() {
               animation: 'pulse 2s infinite',
             }}
           />
+
           <span
             className="font-mono"
             style={{
@@ -123,26 +121,31 @@ export default function Hero() {
           </span>
         </div>
 
-        {/* Headline */}
         <h1
           style={{
             fontSize: 'clamp(2.8rem, 6vw, 5rem)',
             fontWeight: 800,
             lineHeight: 1.05,
             letterSpacing: '-.04em',
+            marginBottom: '.5rem',
+          }}
+        >
+          Hi, I&apos;m Emmanuel.
+        </h1>
+
+        <h1
+          style={{
+            fontSize: 'clamp(2rem, 4.5vw, 4rem)',
+            fontWeight: 800,
+            lineHeight: 1.05,
+            letterSpacing: '-.04em',
             marginBottom: '1.5rem',
           }}
         >
-          I Build
-          <br />
-          <span
-            style={{
-              color: 'var(--accent)',
-              display: 'block',
-              minHeight: '1.1em',
-            }}
-          >
+          I Build{' '}
+          <span style={{ color: 'var(--accent)' }}>
             {displayed}
+
             <span
               style={{
                 display: 'inline-block',
@@ -157,7 +160,6 @@ export default function Hero() {
           </span>
         </h1>
 
-        {/* Subtext */}
         <p
           style={{
             fontSize: '1.1rem',
@@ -165,18 +167,24 @@ export default function Hero() {
             maxWidth: 520,
             lineHeight: 1.8,
             marginBottom: '2.5rem',
+            fontWeight: 400,
           }}
         >
-          Full Stack Developer specializing in high performance APIs,
-          distributed architectures, and solid web applications.
+          Full Stack Software Engineer based in Lagos, Nigeria. I design
+          responsive interfaces, build REST APIs, and ship complete
+          applications from frontend to backend.{' '}
           <strong style={{ color: 'var(--text)' }}>
-            {' '}
-            Clean code. Real impact.
+            Clean code. Production-ready.
           </strong>
         </p>
 
-        {/* CTA */}
-        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+        <div
+          style={{
+            display: 'flex',
+            gap: '1rem',
+            flexWrap: 'wrap',
+          }}
+        >
           <a
             href="#projects"
             style={{
@@ -187,6 +195,15 @@ export default function Hero() {
               textDecoration: 'none',
               fontWeight: 600,
               fontSize: '.95rem',
+              transition: 'all .2s',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.background = 'var(--accent2)'
+              e.currentTarget.style.transform = 'translateY(-2px)'
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = 'var(--accent)'
+              e.currentTarget.style.transform = 'translateY(0)'
             }}
           >
             View Projects
@@ -203,13 +220,23 @@ export default function Hero() {
               textDecoration: 'none',
               fontWeight: 500,
               fontSize: '.95rem',
+              transition: 'all .2s',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.borderColor = 'var(--accent)'
+              e.currentTarget.style.color = 'var(--accent)'
+              e.currentTarget.style.transform = 'translateY(-2px)'
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.borderColor = 'var(--border2)'
+              e.currentTarget.style.color = 'var(--text)'
+              e.currentTarget.style.transform = 'translateY(0)'
             }}
           >
-            Let's Talk →
+            Let&apos;s Talk →
           </a>
         </div>
 
-        {/* Stats */}
         <div
           style={{
             display: 'flex',
@@ -221,9 +248,9 @@ export default function Hero() {
           }}
         >
           {[
-            { num: '3+', label: 'Years experience' },
-            { num: '20+', label: 'Projects shipped' },
-            { num: '99%', label: 'Uptime average' },
+            { num: '4+', label: 'Years of experience' },
+            { num: '3+', label: 'Projects shipped' },
+            { num: '100%', label: 'End-to-end delivery' },
           ].map(({ num, label }) => (
             <div key={label}>
               <div
@@ -234,15 +261,18 @@ export default function Hero() {
                 }}
               >
                 {num.replace(/[+%]/, '')}
+
                 <span style={{ color: 'var(--accent)' }}>
                   {num.match(/[+%]/)?.[0]}
                 </span>
               </div>
+
               <div
                 className="font-mono"
                 style={{
                   fontSize: '.78rem',
                   color: 'var(--text3)',
+                  letterSpacing: '.08em',
                   marginTop: '.2rem',
                 }}
               >
@@ -253,10 +283,44 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Animations */}
       <style>{`
-        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
-        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+        @keyframes pulse {
+          0%, 100% {
+            opacity: 1;
+          }
+
+          50% {
+            opacity: .3;
+          }
+        }
+
+        @keyframes blink {
+          0%, 100% {
+            opacity: 1;
+          }
+
+          50% {
+            opacity: 0;
+          }
+        }
+
+        .hidden-mobile {
+          display: flex !important;
+        }
+
+        .show-mobile {
+          display: none !important;
+        }
+
+        @media (max-width: 768px) {
+          .hidden-mobile {
+            display: none !important;
+          }
+
+          .show-mobile {
+            display: block !important;
+          }
+        }
       `}</style>
     </section>
   )
